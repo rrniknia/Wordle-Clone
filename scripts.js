@@ -1,5 +1,6 @@
 const tileDisplay = document.querySelector('#tile-container');
 const keyboard = document.querySelector('#key-container');
+const messageDisplay = document.querySelector('#msg-container')
 
 // Used to generate key buttons within keyboard
 const keys = [
@@ -32,6 +33,8 @@ const keys = [
     'M',
     'DEL'
 ];
+
+const werdle = 'POWER';
 
 const guessRows = [
     ['', '', '', '', ''],
@@ -67,7 +70,7 @@ const handleClick = (key) => {
         return;
     }
     if (key === "ENTER") {
-        console.log("check row");
+        checkRow();
         return;
     }
     addLetter(key);
@@ -105,4 +108,43 @@ const deleteLetter = () => {
         tile.setAttribute('data', '');
 
     }
+}
+
+const checkRow = () => {
+    if (currentTile === 5) { // if word is 5 letters long...
+        // check to see if it is valid (within the array of acceptable 5-letter strings)
+        const guess = guessRows[currentRow].join(''); // join current row's text entry to a 5-letter string
+        // ToDo:    check to see if guess matches the list of valid 5-letter words
+        //          if guess is valid, check to see if it matches werdle - if guess is not valid, prompt user to enter another word (display message in #msg-container)        
+        
+        //if (checkIfWordValid()) {
+            console.log("guess: " + guess);
+            console.log("wordle: " + werdle);
+            if (guess === werdle) {
+                showMessage("guess was correct");
+            }
+            else {
+                showMessage("guess was incorrect");
+            }
+        //}
+        
+
+        currentRow++;
+        currentTile = 0;
+    }
+    else if (currentTile != 4) {
+        showMessage("Word must be 5 letters long");
+    }
+}
+
+const showMessage = (message) => {
+    const messageElement = document.createElement('p');
+
+    if (messageDisplay.firstChild) {
+        messageDisplay.removeChild(messageDisplay.firstChild);
+    }
+
+    messageElement.textContent = message;
+    messageDisplay.append(messageElement);
+    
 }
